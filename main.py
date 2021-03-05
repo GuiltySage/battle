@@ -50,22 +50,12 @@ enemies = [enemy1, enemy2, enemy3]
 running = True
 i = 0
 t = 3
-
 defeated_enemies = 0
 defeated_players = 0
 print(BColors.FAIL + BColors.BOLD + "AN ENEMY ATTACKS!" + BColors.ENDC)
 
 while running:
-    # Check if battle is over
-    # Check if player won
-    if defeated_enemies == 3:
-        print(BColors.OKGREEN + "You win!" + BColors.ENDC)
-        running = False
 
-    # Check if enemy won
-    elif defeated_players == 3:
-        print(BColors.FAIL + "Your enemies have defeated you!" + BColors.ENDC)
-        running = False
 
     print("======================================================================================")
 
@@ -96,7 +86,6 @@ while running:
                 print(enemies[enemy].name.replace(" ", "") + " has died.")
                 del enemies[enemy]
                 defeated_enemies += 1
-                print(defeated_enemies)
 
         elif index == 1:
             player.choose_magic()
@@ -132,7 +121,6 @@ while running:
                     print(enemies[enemy].name.replace(" ", "") + " has died.")
                     del enemies[enemy]
                     defeated_enemies += 1
-                    print(defeated_enemies)
 
         elif index == 2:
             player.choose_item()
@@ -173,7 +161,11 @@ while running:
                     print(enemies[enemy].name.replace(" ", "") + " has died.")
                     del enemies[enemy]
                     defeated_enemies += 1
-                    print(defeated_enemies)
+
+    # Check if player won
+    if defeated_enemies >= 3:
+        print(BColors.OKGREEN + "You win!" + BColors.ENDC)
+        running = False
 
     # Enemy attack phase
     for enemy in enemies:
@@ -194,7 +186,6 @@ while running:
                 del players[target]
                 t -= 1
                 defeated_players += 1
-                print(t)
 
         elif enemy_choice == 1:
             magic_choice = random.randrange(0, len(enemy.magic))
@@ -226,4 +217,9 @@ while running:
                     del players[target]
                     t -= 1
                     defeated_players += 1
-                    print(t)
+
+    # Check if enemy won
+    if defeated_players >= 3:
+        print(BColors.FAIL + "Your enemies have defeated you!" + BColors.ENDC)
+        running = False
+

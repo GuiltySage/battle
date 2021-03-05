@@ -61,15 +61,11 @@ while running:
     if defeated_enemies == 3:
         print(BColors.OKGREEN + "You win!" + BColors.ENDC)
         running = False
-        if not running:
-            break
 
     # Check if enemy won
     elif defeated_players == 3:
         print(BColors.FAIL + "Your enemies have defeated you!" + BColors.ENDC)
         running = False
-        if not running:
-            break
 
     print("======================================================================================")
 

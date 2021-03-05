@@ -49,10 +49,28 @@ enemies = [enemy1, enemy2, enemy3]
 
 running = True
 i = 0
+t = 3
 
+defeated_enemies = 0
+defeated_players = 0
 print(BColors.FAIL + BColors.BOLD + "AN ENEMY ATTACKS!" + BColors.ENDC)
 
 while running:
+    # Check if battle is over
+    # Check if player won
+    if defeated_enemies == 3:
+        print(BColors.OKGREEN + "You win!" + BColors.ENDC)
+        running = False
+        if not running:
+            break
+
+    # Check if enemy won
+    elif defeated_players == 3:
+        print(BColors.FAIL + "Your enemies have defeated you!" + BColors.ENDC)
+        running = False
+        if not running:
+            break
+
     print("======================================================================================")
 
     print("\n")
@@ -81,6 +99,8 @@ while running:
             if enemies[enemy].get_hp() == 0:
                 print(enemies[enemy].name.replace(" ", "") + " has died.")
                 del enemies[enemy]
+                defeated_enemies += 1
+                print(defeated_enemies)
 
         elif index == 1:
             player.choose_magic()
@@ -115,6 +135,8 @@ while running:
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has died.")
                     del enemies[enemy]
+                    defeated_enemies += 1
+                    print(defeated_enemies)
 
         elif index == 2:
             player.choose_item()
@@ -154,28 +176,8 @@ while running:
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has died.")
                     del enemies[enemy]
-
-    # Check if battle is over
-    defeated_enemies = 0
-    defeated_players = 0
-
-    for enemy in enemies:
-        if enemy.get_hp() == 0:
-            defeated_enemies += 1
-
-    for player in players:
-        if player.get_hp() == 0:
-            defeated_players += 1
-
-    # Check if player won
-    if defeated_enemies == 3:
-        print(BColors.OKGREEN + "You win!" + BColors.ENDC)
-        running = False
-
-    # Check if enemy won
-    elif defeated_players == 3:
-        print(BColors.FAIL + "Your enemies have defeated you!" + BColors.ENDC)
-        running = False
+                    defeated_enemies += 1
+                    print(defeated_enemies)
 
     # Enemy attack phase
     for enemy in enemies:
@@ -183,16 +185,20 @@ while running:
 
         if enemy_choice == 0:
             # Chose attack
-            target = random.randrange(0, 3)
-            enemy_dmg = enemies[0].generate_damage()
+
+            target = random.randrange(0, t)
+            enemy_dmg = enemy.generate_damage()
 
             players[target].take_damage(enemy_dmg)
             print("\n", enemy.name.replace(" ", "") + " attacks " + players[target].name.replace(" ", "")
                   + " for", enemy_dmg, "points of damage.")
 
-            if players[target].get_hp == 0:
+            if players[target].get_hp() == 0:
                 print(players[target].name.replace(" ", "") + " has died.")
                 del players[target]
+                t -= 1
+                defeated_players += 1
+                print(t)
 
         elif enemy_choice == 1:
             magic_choice = random.randrange(0, len(enemy.magic))
@@ -212,13 +218,16 @@ while running:
 
             elif spell.type == "black":
 
-                target = random.randrange(0, 3)
+                target = random.randrange(0, t)
 
                 players[target].take_damage(magic_dmg)
 
                 print(BColors.OKBLUE + "\n" + enemy.name.replace(" ", "") + "'s " + spell.name + " deals",
                       str(magic_dmg), "points of damage to " + players[target].name.replace(" ", "") + BColors.ENDC)
 
-                if players[target].get_hp == 0:
+                if players[target].get_hp() == 0:
                     print(players[target].name.replace(" ", "") + " has died.")
                     del players[target]
+                    t -= 1
+                    defeated_players += 1
+                    print(t)

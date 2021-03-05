@@ -222,4 +222,3 @@ while running:
                 if players[target].get_hp == 0:
                     print(players[target].name.replace(" ", "") + " has died.")
                     del players[target]
-
